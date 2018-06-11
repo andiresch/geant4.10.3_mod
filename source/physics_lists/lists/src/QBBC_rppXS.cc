@@ -23,11 +23,11 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id: QBBC.cc 66892 2013-01-17 10:57:59Z gunter $
+// $Id: QBBC_rppXS.cc 66892 2013-01-17 10:57:59Z gunter $
 //
 //---------------------------------------------------------------------------
 //
-// ClassName:QBBC
+// ClassName:QBBC_rppXS 
 //
 // Author: 11 April 2006 V. Ivanchenko
 //
@@ -37,11 +37,11 @@
 // 20.04.11 V.Ivanchenko: remove extra headers of elastic builders
 //                        added FTFP/Binary ion physics 
 // 16.10.12 A.Ribon: renamed the used physics classes
-//
+// 11.06.19 A.Resch: replaced proton elastic XS with QGSP_BIC XS
 //----------------------------------------------------------------------------
 //
 
-#include "QBBC.hh"
+#include "QBBC_rppXS.hh"
 #include "globals.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
@@ -57,7 +57,7 @@
 #include "G4StoppingPhysics.hh"
 
 #include "G4DataQuestionaire.hh"
-#include "G4HadronInelasticQBBC.hh"
+#include "G4HadronInelasticQBBC_rppXS.hh"
 #include "G4HadronElasticPhysics.hh"
 #include "G4HadronElasticPhysicsXS.hh"
 #include "G4HadronElasticPhysicsHP.hh"
@@ -65,10 +65,10 @@
 #include "G4IonPhysics.hh"
 #include "G4NeutronTrackingCut.hh"
 
-QBBC::QBBC( G4int ver, const G4String&)
+QBBC_rppXS::QBBC_rppXS( G4int ver, const G4String&)
 {
   G4DataQuestionaire it(photon, neutronxs);
-  G4cout << "<<< Reference Physics List QBBC "
+  G4cout << "<<< Reference Physics List QBBC_rppXS "
 	 <<G4endl;	
 
   defaultCutValue = 0.7*mm;  
@@ -84,26 +84,26 @@ QBBC::QBBC( G4int ver, const G4String&)
   RegisterPhysics( new G4DecayPhysics(ver) );
 // begin change A.Resch
    // Hadron Physics
-  //QBBC original: 
+  //QBBC_rppXS original: 
   RegisterPhysics( new G4HadronElasticPhysicsXS(ver) );
    // Hadron Elastic scattering
-   // QBBC_BIC:
+   // QBBC_rppXS_BIC:
   //RegisterPhysics( new G4HadronElasticPhysics(ver) );
  // end change A.Resch
   RegisterPhysics( new G4StoppingPhysics(ver) );
 
   RegisterPhysics( new G4IonPhysics(ver) );
 
-  RegisterPhysics( new G4HadronInelasticQBBC(ver));
+  RegisterPhysics( new G4HadronInelasticQBBC_rppXS(ver));
 
   // Neutron tracking cut
   RegisterPhysics( new G4NeutronTrackingCut(ver) );
 }		 
 
-QBBC::~QBBC() 
+QBBC_rppXS::~QBBC_rppXS() 
 {}
 
-void QBBC::SetCuts()
+void QBBC_rppXS::SetCuts()
 {
   SetCutsWithDefault();   
 }
